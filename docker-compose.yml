@@ -1,24 +1,24 @@
 services:
   db:
     image: postgres:14
-    container_name: improveu_postgres
+    container_name: mini_postgres
     environment:
       POSTGRES_USER: yassine
       POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: improveu_backenddatabase
+      POSTGRES_DB: mini_backenddatabase
     ports:
       - "5432:5432"  
     volumes:
       - db-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U yassine -d improveu_backenddatabase || exit 1"]
+      test: ["CMD-SHELL", "pg_isready -U yassine -d mini_backenddatabase || exit 1"]
       interval: 5s
       timeout: 5s
       retries: 5
 
   flyway:
     image: flyway/flyway:9.16.0
-    container_name: improveu_flyway
+    container_name: mini_flyway
     depends_on:
       db:
         condition: service_healthy
@@ -29,7 +29,7 @@ services:
 
 
   backend:
-    container_name: improveu_backend
+    container_name: mini_backend
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -47,13 +47,13 @@ services:
       - DB_PORT=5432
       - DB_USER=yassine
       - DB_PASSWORD=1234
-      - DB_DATABASE=improveu_backenddatabase
+      - DB_DATABASE=mini_backenddatabase
 
   frontend:
     build:
       context: ./front
       dockerfile: Dockerfile
-    container_name: improveu_frontend
+    container_name: mini_frontend
     ports:
       - "5173:5173"
     depends_on:
