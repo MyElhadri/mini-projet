@@ -1,0 +1,66 @@
+services:
+  db:
+    image: postgres:14
+    container_name: mini_postgres
+    environment:
+      POSTGRES_USER: yassine
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: mini_backenddatabase
+    ports:
+      - "5432:5432"  
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U yassine -d mini_backenddatabase || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  flyway:
+    image: flyway/flyway:9.16.0
+    container_name: mini_flyway
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["migrate"] 
+    volumes:
+      - ./backend/flyway/flyway.conf:/flyway/conf/flyway.conf
+      - ./backend/sql:/flyway/sql
+
+
+  backend:
+    container_name: mini_backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+       condition: service_healthy
+
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - DB_HOST=db 
+      - DB_PORT=5432
+      - DB_USER=yassine
+      - DB_PASSWORD=1234
+      - DB_DATABASE=mini_backenddatabase
+
+  frontend:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    container_name: mini_frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    volumes:
+      - ./front:/usr/src/app
+      - /usr/src/app/node_modules
+
+volumes:
+  db-data:
