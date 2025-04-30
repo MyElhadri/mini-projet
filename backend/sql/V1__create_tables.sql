@@ -10,8 +10,8 @@ CREATE TABLE competence (
 	);
 	
 CREATE TABLE personne_competence (
-	idp VARCHAR(50) NOT NULL,
-	idc VARCHAR(50) NOT NULL,
+	idp integer NOT NULL,
+	idc integer NOT NULL,
 	PRIMARY KEY (idp, idc),
 	FOREIGN KEY (idp) REFERENCES personne (idp),
 	FOREIGN KEY (idc) REFERENCES competence (idc)
