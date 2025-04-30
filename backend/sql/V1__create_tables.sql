@@ -6,7 +6,7 @@ CREATE TABLE personne (
 	
 CREATE TABLE competence (
 	idc SERIAL PRIMARY KEY,
-	nom VARCHAR(50) UNIQUE NOT NULL,
+	nom VARCHAR(50) UNIQUE NOT NULL
 	);
 	
 CREATE TABLE personne_competence (
