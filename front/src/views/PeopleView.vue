@@ -212,7 +212,7 @@
   </template>
   
   <script setup>
-  import Dashboard from '..git/components/Dashboard.vue'
+  import Dashboard from '../components/Dashboard.vue'
   import { ref } from 'vue'
 
   const hoveredIndex = ref(null)
