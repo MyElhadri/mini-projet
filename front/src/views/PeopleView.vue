@@ -1,4 +1,5 @@
 <template>
+    <Dashboard />
     <div class="classes-page">
       <header class="header">
         <div class="container container-extended">
@@ -211,6 +212,7 @@
   </template>
   
   <script setup>
+  import Dashboard from '..git/components/Dashboard.vue'
   import { ref } from 'vue'
 
   const hoveredIndex = ref(null)
@@ -381,7 +383,9 @@
     padding: 0;
     box-sizing: border-box;
   }
-  
+  .classes-page{
+    margin-left : 500px;
+  }
   html, body {
     width: 100%;
     overflow-x: hidden;
